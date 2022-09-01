@@ -1,0 +1,29 @@
+Voting APP: http://13.251.89.204:31000/
+Result APP: http://13.251.89.204:31001/
+
+
+Case 1: Deleting Voter Pod 
+	1. command : kubectl delete pod/vote-94849dc97-hg7r2
+	2. observation : Pod recreated and data is intact ,downtime was just while pod creation.
+	
+Case 2: Deleting worker pod 
+	1. command : kubectl delete pod/worker-dd46d7584-8s4rz
+	2. observation : Pod deletion took time ,after dele pod got recreated but did't see any issue in data and able to vote and see the result.
+	
+Case 3: Deleting db pod 
+	1. command : kubectl delete pod/db-b54cd94f4-58n8m
+	2. observation : Pod deletion took time ,after dele pod got recreated ,voting app is working fine entries are being modfied in db correctly.
+					 But result app is not working.
+	   commands to check voter app is working:
+	   kubectl pod/vote-94849dc97-hw7bf
+	   kubectl pod/db-b54cd94f4-4jcxm
+	   Login to db pod : kubectl exec -it pod/db-b54cd94f4-4jcxm -- /bin/sh
+						 psql -U postgres
+						 select * from votes; // votes are adding to db properly after db pod restart only issue with result app
+					 
+					 
+    Problem : As result app makes the client connection with before pod and same client is being used after restart
+	Solution : 
+				1. Restart/deleting Result pod (kubectl delete pod/result-5d57b59f4b-gvxsb) [verfied: Result and voting app is working]
+				2. Modifying the server.js logic to reconnect if connection losts/ any issue
+				3. Making server.js connecting postgres pod with nodePort 
