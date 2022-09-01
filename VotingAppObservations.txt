@@ -24,6 +24,6 @@ Case 3: Deleting db pod
 					 
     Problem : As result app makes the client connection with before pod and same client is being used after restart
 	Solution : 
-				1. Restart/deleting Result pod (kubectl delete pod/result-5d57b59f4b-gvxsb) [verfied: Result and voting app is working]
+				1. Restart/deleting Result pod (kubectl delete pod/result-5d57b59f4b-gvxsb) [verfied: Result and voting app are working]
 				2. Modifying the server.js logic to reconnect if connection losts/ any issue
 				3. Making server.js connecting postgres pod with nodePort 
