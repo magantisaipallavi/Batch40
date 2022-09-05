@@ -1,0 +1,4 @@
+Write a common use-case, where you will use a daemon set instead of replica set :
+  When we need to run on all pods in a cluster we can go for daemon set (Total number of pods = Total number of nodes where scheduling is allowed)
+  But where as replica set just ensures that number of desired pods are running
+
